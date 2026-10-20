@@ -1,11 +1,11 @@
 <!doctype html>
-<html lang="zh-CN">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta
       name="description"
-      content="Support Ladder 是一个用渐进式披露处理客服升级的可运行原型。"
+      content="A runnable evidence-gated support workspace built around progressive disclosure."
     />
     <title>Support Ladder | Evidence-Gated Support</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -18,71 +18,76 @@
   </head>
   <body>
     <header class="app-header">
-      <a class="brand" href="#workspace" aria-label="Support Ladder 工作台">
+      <a class="brand" href="#workspace" aria-label="Support Ladder workspace">
         <span class="brand-mark" aria-hidden="true">SL</span>
         <span>Support Ladder</span>
       </a>
-      <div class="header-status" aria-label="工作台状态">
+      <div class="header-status" aria-label="Workspace status" data-i18n-aria="workspaceStatusLabel">
         <span class="status-dot" aria-hidden="true"></span>
-        <span>Evidence-gated workspace</span>
+        <span data-i18n="workspaceStatus">Evidence-gated workspace</span>
+      </div>
+      <div class="language-switch" aria-label="Language selection" data-i18n-aria="languageSelection">
+        <button class="language-button is-active" type="button" data-locale="en" aria-pressed="true">EN</button>
+        <button class="language-button" type="button" data-locale="zh" aria-pressed="false">中文</button>
       </div>
     </header>
 
     <main class="app-shell" id="workspace">
       <aside class="case-rail" aria-labelledby="case-heading">
         <div>
-          <p class="eyebrow">Case intake</p>
-          <h1 id="case-heading">选择一个待处理问题</h1>
+          <p class="eyebrow" data-i18n="caseIntake">Case intake</p>
+          <h1 id="case-heading" data-i18n="chooseCase">Choose a case to triage</h1>
         </div>
 
-        <label class="field-label" for="case-select">客户请求</label>
+        <label class="field-label" for="case-select" data-i18n="customerRequest">Customer request</label>
         <select id="case-select">
-          <option value="duplicate-charge">重复扣款</option>
-          <option value="late-delivery">物流延迟</option>
-          <option value="refund-window">退款资格</option>
+          <option value="duplicate-charge">Duplicate charge</option>
+          <option value="late-delivery">Late delivery</option>
+          <option value="refund-window">Refund eligibility</option>
         </select>
 
         <section class="customer-message" aria-labelledby="message-heading">
-          <p class="field-label" id="message-heading">客户消息</p>
+          <p class="field-label" id="message-heading" data-i18n="customerMessage">Customer message</p>
           <blockquote id="customer-message"></blockquote>
           <p class="case-meta" id="case-meta"></p>
         </section>
 
         <section class="signal-block" aria-labelledby="signals-heading">
-          <p class="field-label" id="signals-heading">初始信号</p>
+          <p class="field-label" id="signals-heading" data-i18n="initialSignals">Initial signals</p>
           <div class="signal-list" id="signal-list"></div>
         </section>
 
-        <button class="start-button" id="start-triage" type="button">开始分诊</button>
-        <button class="reset-button" id="reset-case" type="button">重置当前案例</button>
+        <button class="start-button" id="start-triage" type="button" data-i18n="startTriage">Start triage</button>
+        <button class="reset-button" id="reset-case" type="button" data-i18n="resetCase">Reset case</button>
 
-        <p class="rail-note">仅在当前证据触发时读取下一份记录。</p>
+        <p class="rail-note" data-i18n="railNote">Only the next record justified by current evidence can be read.</p>
       </aside>
 
       <section class="workbench" aria-labelledby="workbench-heading">
         <section class="case-banner" aria-labelledby="workbench-heading">
           <div class="banner-copy">
-            <p class="eyebrow">Active support case</p>
+            <p class="eyebrow" data-i18n="activeSupportCase">Active support case</p>
             <h2 id="workbench-heading"><span id="case-id"></span> <span id="case-title"></span></h2>
             <p id="case-goal"></p>
           </div>
           <img
             src="assets/context-ladder-hero.png"
-            alt="文件与资料卡片被逐层连接的工作台插图"
+            alt="A workspace illustration of files and records connected in layers"
+            data-i18n-alt="workspaceVisualAlt"
           />
         </section>
 
         <section class="metrics" aria-label="上下文状态">
           <div>
-            <span>已读取记录</span>
+            <span data-i18n="recordsRead">Records read</span>
             <strong id="record-count">0 / 3</strong>
           </div>
           <div>
-            <span>最小数据范围</span>
+            <span data-i18n="minimumScope">Minimum data scope</span>
             <strong id="data-scope">仅客户消息</strong>
           </div>
           <div>
-            <span>决策状态</span>
+            <span data-i18n="decisionState">Decision state</span>
             <strong id="decision-state">等待分诊</strong>
           </div>
         </section>
@@ -91,10 +96,10 @@
           <section class="context-flow" aria-labelledby="flow-heading">
             <div class="panel-heading">
               <div>
-                <p class="eyebrow">Context ladder</p>
-                <h2 id="flow-heading">证据路径</h2>
+                <p class="eyebrow" data-i18n="contextLadder">Context ladder</p>
+                <h2 id="flow-heading" data-i18n="evidencePath">Evidence path</h2>
               </div>
-              <button class="icon-button" id="reveal-next" type="button" aria-label="读取下一份必要记录" title="读取下一份必要记录">+</button>
+              <button class="icon-button" id="reveal-next" type="button" aria-label="Read next required record" title="Read next required record">+</button>
             </div>
             <ol class="context-list" id="context-list"></ol>
           </section>
@@ -102,13 +107,13 @@
           <section class="evidence-panel" aria-labelledby="evidence-heading">
             <div class="panel-heading">
               <div>
-                <p class="eyebrow">Current evidence</p>
-                <h2 id="evidence-heading">当前依据</h2>
+                <p class="eyebrow" data-i18n="currentEvidence">Current evidence</p>
+                <h2 id="evidence-heading" data-i18n="currentBasis">Current basis</h2>
               </div>
-              <span class="read-state" id="read-state">尚未读取</span>
+              <span class="read-state" id="read-state">Not read</span>
             </div>
             <div class="evidence-empty" id="evidence-empty">
-              <p>开始分诊后，系统只会展示与当前问题直接相关的首份记录。</p>
+              <p data-i18n="evidenceEmpty">Once triage starts, only the first record directly relevant to the case is shown.</p>
             </div>
             <div class="evidence-content" id="evidence-content" hidden>
               <p class="source-label" id="evidence-source"></p>
@@ -116,7 +121,7 @@
               <p id="evidence-copy"></p>
               <dl class="evidence-facts" id="evidence-facts"></dl>
               <div class="read-reason">
-                <span>读取理由</span>
+                <span data-i18n="readReason">Why this was read</span>
                 <p id="evidence-reason"></p>
               </div>
             </div>
@@ -125,23 +130,23 @@
           <section class="resolution-panel" aria-labelledby="resolution-heading">
             <div class="panel-heading">
               <div>
-                <p class="eyebrow">Resolution</p>
-                <h2 id="resolution-heading">处理建议</h2>
+                <p class="eyebrow" data-i18n="resolution">Resolution</p>
+                <h2 id="resolution-heading" data-i18n="resolutionAdvice">Resolution advice</h2>
               </div>
-              <span class="resolution-badge" id="resolution-badge">待定</span>
+              <span class="resolution-badge" id="resolution-badge">Pending</span>
             </div>
             <div class="resolution-empty" id="resolution-empty">
-              <p>收集到足够依据后，这里会生成可执行的答复与升级动作。</p>
+              <p data-i18n="resolutionEmpty">Once sufficient evidence is collected, an executable response and escalation action will appear here.</p>
             </div>
             <div class="resolution-content" id="resolution-content" hidden>
-              <p class="action-label">建议动作</p>
+              <p class="action-label" data-i18n="recommendedAction">Recommended action</p>
               <h3 id="resolution-action"></h3>
               <p id="resolution-copy"></p>
               <div class="reply-draft">
-                <span>客户答复草案</span>
+                <span data-i18n="replyDraft">Customer reply draft</span>
                 <p id="reply-draft"></p>
               </div>
-              <button class="copy-button" id="copy-reply" type="button">复制答复</button>
+              <button class="copy-button" id="copy-reply" type="button" data-i18n="copyReply">Copy reply</button>
             </div>
           </section>
         </div>
@@ -149,8 +154,8 @@
         <section class="audit-panel" aria-labelledby="audit-heading">
           <div class="panel-heading">
             <div>
-              <p class="eyebrow">Disclosure log</p>
-              <h2 id="audit-heading">审计轨迹</h2>
+              <p class="eyebrow" data-i18n="disclosureLog">Disclosure log</p>
+              <h2 id="audit-heading" data-i18n="auditTrail">Audit trail</h2>
             </div>
             <span id="audit-count">0 events</span>
           </div>

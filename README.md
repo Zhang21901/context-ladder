@@ -1,44 +1,54 @@
 # Support Ladder
 
-一个可运行的客服升级原型，将 Agent 的“渐进式披露”（progressive disclosure）落到真实处理流：不给支持系统一次性加载所有客户信息、订单历史和政策文档，而是让每个新信号决定下一份应该读取的记录。
+A runnable, bilingual prototype for **evidence-gated support**: a practical application of progressive disclosure for customer-support workflows.
 
-![Context Ladder 页面头图](assets/context-ladder-hero.png)
+![Support Ladder workspace](assets/context-ladder-hero.png)
 
-## 项目做什么
+The interface defaults to English. Use the `EN / 中文` control in the header to switch every workflow label, case, evidence record, audit event, and reply draft to Chinese.
 
-- 支持重复扣款、物流延迟和退款资格三个真实客服案例。
-- 每个案例只从客户消息和问题信号开始。
-- 订单、支付、承运商与政策记录按证据逐层解锁。
-- 每次读取都会写入审计轨迹，记录“读取了什么”以及“为什么现在需要读”。
-- 在获得足够依据后生成限定范围的处理动作与客户答复草案。
+## What It Demonstrates
 
-这个原型提出的应用模式是 **evidence-gated support**：将客服上下文读取改为由证据触发的权限与知识路径，而不是由一个“大而全”的客服助手直接访问全部资料。
+Instead of loading a customer profile, complete order history, every policy, and every support tool at the start, Support Ladder reveals the next record only when the evidence already collected justifies it.
 
-## 运行
+For a duplicate charge, for example:
 
-这是一个无构建步骤的静态网站。直接打开 `index.html` 即可，或使用任意静态服务器：
+1. The customer message exposes an order clue and an amount.
+2. That justifies reading the order summary.
+3. Two successful payment callbacks justify reading the idempotency log.
+4. A confirmed duplicate charge justifies reading the matching refund policy.
+5. Once the evidence is sufficient, the system stops expanding context and produces a scoped resolution.
+
+Every disclosure is recorded with its reason. Unrelated history, policy, and customer data remain unread.
+
+The prototype includes three cases:
+
+- Duplicate charge
+- Late delivery
+- Refund eligibility
+
+## Run Locally
+
+This is a static site with no build step. Open `index.html` directly, or start a local server:
 
 ```sh
 python3 -m http.server 4173
 ```
 
-然后访问 `http://localhost:4173`。
+Then open `http://localhost:4173`.
 
-## 为什么这体现渐进式披露
+## Why Progressive Disclosure
 
-渐进式披露不是单纯的界面折叠，也不是减少信息量。这里它意味着：
+Progressive disclosure is not merely splitting a fixed workflow into more steps. It starts from a deliberately small information surface and exposes a deeper layer only when the current task creates a reason for it.
 
-1. 客户问题中的信号决定第一份记录。
-2. 前一份记录中的事实决定下一份政策或服务记录。
-3. 不满足读取条件的资料保持不可见。
-4. 信息足以行动时停止，保留来源、理由与处理路径。
+For agents, that can mean beginning with basic search and read capabilities rather than preloading an entire codebase, knowledge base, or tool catalog. Search results can lead to files; files can lead to skills, APIs, or database guidance. The agent incrementally builds only the context needed to act.
 
-这种设计能减少无关上下文、降低工具膨胀，并让系统更能适应变化。
+## Assets
 
-## 资源
+The workspace illustration at `assets/context-ladder-hero.png` was generated with OpenAI Image Generation.
 
-- 页面头图由 OpenAI Image Generation 生成，存放于 `assets/context-ladder-hero.png`。
-- 推文文案见 [TWEET.md](TWEET.md)。
+## Post Copy
+
+Ready-to-publish English X thread copy is in [TWEET.md](TWEET.md).
 
 ## License
 
