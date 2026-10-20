@@ -2,24 +2,28 @@
 
 ## 中文版
 
-很多 Agent 系统一遇到新需求，就会多加一个工具。
+“渐进式披露”不只是把界面内容折叠起来。
 
-我做了一个小项目 **Context Ladder**，用交互演示解释另一种思路：让 Agent 通过搜索、阅读和递归引用，按需构建上下文。
+对 Agent 而言，它意味着：不要一开始把所有数据、政策和工具都塞进上下文；让当前问题的证据，决定下一步读取什么。
 
-它展示了从任务信号到搜索入口、再到技能文件与代码引用的四层路径，并把这个模式延展到客服、临床协作和工业运维。
+我把这个思路做成了一个可运行的小项目 **Support Ladder**：一个客服升级工作台。
 
-渐进式披露的关键不只是少塞一点上下文，而是让每一步展开都有证据、有边界、可追溯。
+它从客户消息开始，只在必要时解锁订单、支付、物流或退款政策；每一次读取都会留下“为什么要读”的审计轨迹，最后才生成处理建议和客户答复。
+
+这是一种我称为 evidence-gated support 的应用：用证据控制上下文，而不是让一个全知助手默认看到一切。
 
 仓库链接：https://github.com/Zhang21901/context-ladder
 
 ## English version
 
-When an agent needs a new capability, the default response is often: add another tool.
+Progressive disclosure is not just a UI pattern.
 
-I built **Context Ladder**, a small interactive explainer for a different pattern: let an agent build context on demand through search, reading, and recursive references.
+For agents, it means: do not load every data source, policy, and tool at the start. Let evidence from the current task determine what to read next.
 
-It walks through a four-layer path from task signal to search entry point, referenced skills, and a bounded action. The same pattern can apply to customer support, clinical collaboration, and industrial operations.
+I turned this into a runnable project called **Support Ladder**, an evidence-gated customer-support workspace.
 
-Progressive disclosure is not just smaller context. It makes every expansion evidence-based, bounded, and traceable.
+It starts with the customer message, reveals order, payment, carrier, or policy records only when needed, logs why each record was read, and generates a resolution only after sufficient evidence exists.
+
+This is evidence-gated support: context controlled by evidence, not an all-seeing assistant by default.
 
 Repository: https://github.com/Zhang21901/context-ladder

@@ -5,9 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta
       name="description"
-      content="Context Ladder 是一个用交互演示解释 Agent 如何通过渐进式披露自行构建上下文的中文项目。"
+      content="Support Ladder 是一个用渐进式披露处理客服升级的可运行原型。"
     />
-    <title>Context Ladder | 让 Agent 自己找到答案</title>
+    <title>Support Ladder | Evidence-Gated Support</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -17,170 +17,147 @@
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
-    <header class="site-header">
-      <a class="brand" href="#top" aria-label="Context Ladder 首页">
-        <span class="brand-mark" aria-hidden="true">CL</span>
-        <span>Context Ladder</span>
+    <header class="app-header">
+      <a class="brand" href="#workspace" aria-label="Support Ladder 工作台">
+        <span class="brand-mark" aria-hidden="true">SL</span>
+        <span>Support Ladder</span>
       </a>
-      <nav aria-label="页面导航">
-        <a href="#demo">演示</a>
-        <a href="#article">短文</a>
-        <a href="#ideas">新场景</a>
-      </nav>
+      <div class="header-status" aria-label="工作台状态">
+        <span class="status-dot" aria-hidden="true"></span>
+        <span>Evidence-gated workspace</span>
+      </div>
     </header>
 
-    <main id="top">
-      <section class="hero" aria-labelledby="hero-title">
-        <img
-          class="hero-image"
-          src="assets/context-ladder-hero.png"
-          alt="桌面上的文件、代码与资料卡片沿着一条发光路径逐层连接"
-        />
-        <div class="hero-content">
-          <p class="eyebrow">Agent context, discovered on demand</p>
-          <h1 id="hero-title">不要把答案塞给 Agent。<br />给它一架找到答案的梯子。</h1>
-          <p class="hero-copy">
-            渐进式披露让 Agent 只在需要时发现下一层信息：先理解任务，再检索线索，最后读取恰好足够的上下文。
-          </p>
-          <a class="primary-link" href="#demo">从一次检索开始</a>
+    <main class="app-shell" id="workspace">
+      <aside class="case-rail" aria-labelledby="case-heading">
+        <div>
+          <p class="eyebrow">Case intake</p>
+          <h1 id="case-heading">选择一个待处理问题</h1>
         </div>
-      </section>
 
-      <section class="principle" aria-labelledby="principle-title">
-        <p class="section-label">核心转变</p>
-        <div class="principle-grid">
-          <h2 id="principle-title">从“预先投喂”，到“按需发现”。</h2>
-          <p>
-            过去，系统用 RAG 或固定提示词预先挑选资料，再交给模型。现在，我们可以提供搜索、读取与执行等基础能力，让 Agent 根据当前问题自行决定：下一步该找什么、该读多深、何时停止。
-          </p>
-        </div>
-      </section>
+        <label class="field-label" for="case-select">客户请求</label>
+        <select id="case-select">
+          <option value="duplicate-charge">重复扣款</option>
+          <option value="late-delivery">物流延迟</option>
+          <option value="refund-window">退款资格</option>
+        </select>
 
-      <section class="demo-section" id="demo" aria-labelledby="demo-title">
-        <div class="section-heading">
+        <section class="customer-message" aria-labelledby="message-heading">
+          <p class="field-label" id="message-heading">客户消息</p>
+          <blockquote id="customer-message"></blockquote>
+          <p class="case-meta" id="case-meta"></p>
+        </section>
+
+        <section class="signal-block" aria-labelledby="signals-heading">
+          <p class="field-label" id="signals-heading">初始信号</p>
+          <div class="signal-list" id="signal-list"></div>
+        </section>
+
+        <button class="start-button" id="start-triage" type="button">开始分诊</button>
+        <button class="reset-button" id="reset-case" type="button">重置当前案例</button>
+
+        <p class="rail-note">仅在当前证据触发时读取下一份记录。</p>
+      </aside>
+
+      <section class="workbench" aria-labelledby="workbench-heading">
+        <section class="case-banner" aria-labelledby="workbench-heading">
+          <div class="banner-copy">
+            <p class="eyebrow">Active support case</p>
+            <h2 id="workbench-heading"><span id="case-id"></span> <span id="case-title"></span></h2>
+            <p id="case-goal"></p>
+          </div>
+          <img
+            src="assets/context-ladder-hero.png"
+            alt="文件与资料卡片被逐层连接的工作台插图"
+          />
+        </section>
+
+        <section class="metrics" aria-label="上下文状态">
           <div>
-            <p class="section-label">交互演示</p>
-            <h2 id="demo-title">一次任务，四层上下文</h2>
+            <span>已读取记录</span>
+            <strong id="record-count">0 / 3</strong>
           </div>
-          <p>点击每一层，观察 Agent 如何让检索结果决定下一步，而不是一次加载整座知识库。</p>
-        </div>
-
-        <div class="demo-layout">
-          <div class="step-list" role="tablist" aria-label="上下文发现层级">
-            <button class="step is-active" type="button" role="tab" aria-selected="true" aria-controls="step-panel" data-step="0">
-              <span class="step-number">01</span>
-              <span>
-                <strong>任务信号</strong>
-                <small>用户问了什么？</small>
-              </span>
-            </button>
-            <button class="step" type="button" role="tab" aria-selected="false" aria-controls="step-panel" data-step="1">
-              <span class="step-number">02</span>
-              <span>
-                <strong>定位入口</strong>
-                <small>从哪里开始找？</small>
-              </span>
-            </button>
-            <button class="step" type="button" role="tab" aria-selected="false" aria-controls="step-panel" data-step="2">
-              <span class="step-number">03</span>
-              <span>
-                <strong>递归展开</strong>
-                <small>哪些引用值得继续读？</small>
-              </span>
-            </button>
-            <button class="step" type="button" role="tab" aria-selected="false" aria-controls="step-panel" data-step="3">
-              <span class="step-number">04</span>
-              <span>
-                <strong>执行与收束</strong>
-                <small>何时已经足够？</small>
-              </span>
-            </button>
-          </div>
-
-          <article class="context-panel" id="step-panel" role="tabpanel" aria-live="polite">
-            <p class="panel-kicker" id="panel-kicker">从问题开始</p>
-            <h3 id="panel-title">“为什么支付接口在重试后重复扣款？”</h3>
-            <p id="panel-copy">
-              Agent 不必先读完整支付系统。问题中的“重试”和“重复扣款”已经告诉它，应该优先寻找请求幂等、重试策略和订单状态机。
-            </p>
-            <div class="evidence" id="panel-evidence" aria-label="当前已获得的上下文">
-              <span>任务：排查重复扣款</span>
-              <span>关键词：重试、幂等</span>
-            </div>
-            <div class="decision" id="panel-decision">
-              <span class="decision-label">下一步</span>
-              <strong>搜索 <code>idempotency</code> 与 <code>retry</code></strong>
-            </div>
-          </article>
-        </div>
-      </section>
-
-      <section class="article-section" id="article" aria-labelledby="article-title">
-        <div class="article-intro">
-          <p class="section-label">短文</p>
-          <h2 id="article-title">渐进式披露：Agent 不是记住一切，而是会找到恰好需要的东西</h2>
-        </div>
-        <div class="article-body">
-          <p>
-            我们常把 AI 的能力理解为“知道得多”。但在真实工作里，更重要的能力往往是：面对一个具体问题，知道先查哪里，再根据新证据决定下一步。渐进式披露把这种能力变成系统设计原则。
-          </p>
-          <p>
-            它的起点很朴素：不要在任务开始时把整套文档、全部代码或整个知识库塞进上下文。先给 Agent 一个任务和少量可靠的入口，例如文件搜索、目录索引、技能说明或数据库查询规则。Agent 发现一个相关文件后，再读取其中指向的下一份材料。每一层信息都由上一层的证据触发。
-          </p>
-          <p>
-            这样做的收益不只是节省 token。它让推理过程更贴近人类研究：上下文更相关、信息来源更可追踪，也更容易适应不断变化的代码库和业务规则。Agent Skills 的价值正在于此：它们不是把所有能力做成更多工具，而是为已有的搜索与读取能力提供一条可探索的知识路径。
-          </p>
-          <p>
-            因此，设计 Agent 时要问的不是“还要不要再加一个工具”，而是“它能否在需要时，自己发现使用现有能力的方法”。当答案是肯定的，系统就能以更低的复杂度持续扩展。
-          </p>
-        </div>
-      </section>
-
-      <section class="ideas-section" id="ideas" aria-labelledby="ideas-title">
-        <div class="section-heading">
           <div>
-            <p class="section-label">迁移与创新</p>
-            <h2 id="ideas-title">把“上下文阶梯”移到别的领域</h2>
+            <span>最小数据范围</span>
+            <strong id="data-scope">仅客户消息</strong>
           </div>
-          <p>共同原则：不预装所有规则，而是让当前信号引出下一层必要的证据和权限。</p>
-        </div>
-        <div class="idea-grid">
-          <article class="idea-card">
-            <span class="idea-index">01</span>
-            <h3>客服的“证据式升级”</h3>
-            <p>先读订单与当前对话；只有出现退款、物流异常或争议信号时，才展开对应政策、仓储记录和人工升级路径。</p>
-            <p class="idea-outcome">结果：更少误引用政策，更快把复杂问题交给正确的人。</p>
-          </article>
-          <article class="idea-card">
-            <span class="idea-index">02</span>
-            <h3>临床协作的“最小知情”</h3>
-            <p>先用主诉、过敏史和关键指标生成下一步检查建议；确有必要时才请求专科病历或历史影像，并记录理由。</p>
-            <p class="idea-outcome">结果：兼顾隐私边界、审计要求与协作效率。</p>
-          </article>
-          <article class="idea-card">
-            <span class="idea-index">03</span>
-            <h3>工业运维的“故障地图”</h3>
-            <p>从实时告警开始，按组件依赖关系逐层展开传感器数据、变更记录、维修手册和备件库存，而不是扫描全部设备日志。</p>
-            <p class="idea-outcome">结果：把告警风暴转为可解释的排障路线。</p>
-          </article>
-        </div>
-      </section>
+          <div>
+            <span>决策状态</span>
+            <strong id="decision-state">等待分诊</strong>
+          </div>
+        </section>
 
-      <section class="closing" aria-labelledby="closing-title">
-        <p class="section-label">设计检查</p>
-        <h2 id="closing-title">新增功能前，先检查这三个问题。</h2>
-        <ol>
-          <li>Agent 是否已经拥有足够的基础动作，例如搜索、读取、查询或执行？</li>
-          <li>能否把新知识写成一份按需发现的说明，而不是新增一个专属工具？</li>
-          <li>每次展开是否由当前任务的证据触发，并且能留下可审计的轨迹？</li>
-        </ol>
+        <div class="workspace-grid">
+          <section class="context-flow" aria-labelledby="flow-heading">
+            <div class="panel-heading">
+              <div>
+                <p class="eyebrow">Context ladder</p>
+                <h2 id="flow-heading">证据路径</h2>
+              </div>
+              <button class="icon-button" id="reveal-next" type="button" aria-label="读取下一份必要记录" title="读取下一份必要记录">+</button>
+            </div>
+            <ol class="context-list" id="context-list"></ol>
+          </section>
+
+          <section class="evidence-panel" aria-labelledby="evidence-heading">
+            <div class="panel-heading">
+              <div>
+                <p class="eyebrow">Current evidence</p>
+                <h2 id="evidence-heading">当前依据</h2>
+              </div>
+              <span class="read-state" id="read-state">尚未读取</span>
+            </div>
+            <div class="evidence-empty" id="evidence-empty">
+              <p>开始分诊后，系统只会展示与当前问题直接相关的首份记录。</p>
+            </div>
+            <div class="evidence-content" id="evidence-content" hidden>
+              <p class="source-label" id="evidence-source"></p>
+              <h3 id="evidence-title"></h3>
+              <p id="evidence-copy"></p>
+              <dl class="evidence-facts" id="evidence-facts"></dl>
+              <div class="read-reason">
+                <span>读取理由</span>
+                <p id="evidence-reason"></p>
+              </div>
+            </div>
+          </section>
+
+          <section class="resolution-panel" aria-labelledby="resolution-heading">
+            <div class="panel-heading">
+              <div>
+                <p class="eyebrow">Resolution</p>
+                <h2 id="resolution-heading">处理建议</h2>
+              </div>
+              <span class="resolution-badge" id="resolution-badge">待定</span>
+            </div>
+            <div class="resolution-empty" id="resolution-empty">
+              <p>收集到足够依据后，这里会生成可执行的答复与升级动作。</p>
+            </div>
+            <div class="resolution-content" id="resolution-content" hidden>
+              <p class="action-label">建议动作</p>
+              <h3 id="resolution-action"></h3>
+              <p id="resolution-copy"></p>
+              <div class="reply-draft">
+                <span>客户答复草案</span>
+                <p id="reply-draft"></p>
+              </div>
+              <button class="copy-button" id="copy-reply" type="button">复制答复</button>
+            </div>
+          </section>
+        </div>
+
+        <section class="audit-panel" aria-labelledby="audit-heading">
+          <div class="panel-heading">
+            <div>
+              <p class="eyebrow">Disclosure log</p>
+              <h2 id="audit-heading">审计轨迹</h2>
+            </div>
+            <span id="audit-count">0 events</span>
+          </div>
+          <ol id="audit-list" class="audit-list"></ol>
+        </section>
       </section>
     </main>
-
-    <footer>
-      <span>Context Ladder</span>
-      <span>一个关于 Agent 渐进式披露的交互式短文</span>
-    </footer>
     <script src="script.js"></script>
   </body>
 </html>
