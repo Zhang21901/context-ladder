@@ -10,7 +10,7 @@
 
 渐进式披露的关键不只是少塞一点上下文，而是让每一步展开都有证据、有边界、可追溯。
 
-仓库链接：<REPOSITORY_URL>
+仓库链接：https://github.com/Zhang21901/context-ladder
 
 ## English version
 
@@ -22,4 +22,4 @@ It walks through a four-layer path from task signal to search entry point, refer
 
 Progressive disclosure is not just smaller context. It makes every expansion evidence-based, bounded, and traceable.
 
-Repository: <REPOSITORY_URL>
+Repository: https://github.com/Zhang21901/context-ladder
